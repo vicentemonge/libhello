@@ -2,7 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import get
 from conan.tools.scm import Git
-from conan.tools.files import load, update_conandata
+from conan.tools.files import update_conandata
 
 
 class helloRecipe(ConanFile):
