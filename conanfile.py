@@ -29,9 +29,12 @@ class helloRecipe(ConanFile):
         update_conandata(self, {"sources": {"commit": scm_commit, "url": scm_url}})
 
     def source(self):
+        # we recover the saved url and commit from conandata.yml and use them to get sources
         git = Git(self)
-        git.clone(url="git@github.com:vicentemonge/libhello.git", target=".")
-        #git.checkout("<tag> or <commit hash>")
+        sources = self.conan_data["sources"]
+        self.output.info(f"Cloning sources from: {sources}")
+        git.clone(url=sources["url"], target=".")
+        git.checkout(commit=sources["commit"])
 
     def config_options(self):
         if self.settings.os == "Windows":
