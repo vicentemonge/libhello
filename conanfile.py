@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import get
 from conan.tools.scm import Git
+from conan.tools.files import load, update_conandata
 
 
 class helloRecipe(ConanFile):
@@ -19,6 +20,13 @@ class helloRecipe(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
+
+    def export(self):
+        git = Git(self, self.recipe_folder)
+        scm_url, scm_commit = git.get_url_and_commit()
+        self.output.info(f"Obtained URL: {scm_url} and {scm_commit}")
+        # we store the current url and commit in conandata.yml
+        update_conandata(self, {"sources": {"commit": scm_commit, "url": scm_url}})
 
     def source(self):
         git = Git(self)
